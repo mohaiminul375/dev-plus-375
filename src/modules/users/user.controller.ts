@@ -11,9 +11,10 @@ const createUser = async (req: Request, res: Response) => {
             data: result.rows[0]
         })
     } catch (error: any) {
+        // pending
         res.status(500).json({
             "success": false,
-            "message":error?.message,
+            "message": error?.message,
             "errors": "Error details"
         })
     }

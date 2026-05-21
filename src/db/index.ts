@@ -20,13 +20,13 @@ export const initDB = async () => {
      )`);
         // issue table
         await pool.query(`
-     CREATE TABLE IF NOT EXISTS issue(
+     CREATE TABLE IF NOT EXISTS issues(
      id SERIAL PRIMARY KEY,
      title VARCHAR(150) NOT NULL,
      description TEXT NOT NULL CHECK (char_length(description) >= 20),
      type VARCHAR(20) NOT NULL,
      status VARCHAR(15) DEFAULT 'open' NOT NULL,
-     reporter_id INT UNIQUE REFERENCES users(id) ON DELETE CASCADE,
+     reporter_id INT REFERENCES users(id) ON DELETE CASCADE,
      created_at TIMESTAMP DEFAULT NOW(),
      update_at TIMESTAMP DEFAULT NOW()
      )`)

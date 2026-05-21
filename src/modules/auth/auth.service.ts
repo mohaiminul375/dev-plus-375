@@ -2,6 +2,7 @@ import bcrypt from "bcryptjs";
 import { pool } from "../../db";
 import jwt from 'jsonwebtoken';
 import config from "../../config";
+// pending error handling
 const LoginUserIntoDB = async (payload: { email: string, password: string }) => {
     const { email, password } = payload;
     const userExisted = await pool.query(`

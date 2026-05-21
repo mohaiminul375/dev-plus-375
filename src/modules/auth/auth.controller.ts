@@ -1,5 +1,6 @@
 import type { Request, Response } from "express"
 import { authService } from "./auth.service"
+import { sendResponse } from "../../utility/sendResponse";
 
 const LogInUser = async (req: Request, res: Response) => {
     try {
@@ -14,7 +15,7 @@ const LogInUser = async (req: Request, res: Response) => {
             }
         })
     } catch (error) {
-        // re-work
+        // pending
         console.error(error)
     }
 }
