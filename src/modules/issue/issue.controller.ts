@@ -33,15 +33,21 @@ const getSingleIssue = async (req: Request, res: Response) => {
         sendResponse(res, { statusCode: 201, success: false, message: "Failed to get data due to a server error.", error: error })
     }
 }
-const updateUser = async (req: Request, res: Response) => {
-    try {
-        const result = await issueService.updateUserIntoDB()
-    } catch (error) {
 
+const updateIssue = async (req: Request, res: Response) => {
+    const id = req.params.id;
+    try {
+        const result = await issueService.updateUserIntoDB(id as string, req.body);
+        console.log(result.rows);
+        if (result.rows.length === 0) {
+
+        }
+        sendResponse(res, { statusCode: 200, success: true, message: "Issue updated successfully", data: result.rows[0] })
+    } catch (error) {
+        sendResponse(res, { statusCode: 500, success: false, message: "Failed to update data due to a server error.", error: error })
     }
 }
-const deleteUser = async (req: Request, res: Response) => {
-
+const deleteIssue = async (req: Request, res: Response) => {
     const id = req.params.id;
     try {
         const result = await issueService.deleteUserIntoDB(id as string);
@@ -57,6 +63,6 @@ export const issueController = {
     createIssue,
     getAllIssue,
     getSingleIssue,
-    updateUser,
-    deleteUser
+    updateIssue,
+    deleteIssue
 }

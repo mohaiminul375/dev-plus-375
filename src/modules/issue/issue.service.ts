@@ -1,5 +1,5 @@
 import { pool } from "../../db";
-import type { IIssue } from "./issue.interface"
+import type { IIssue, UPIssue } from "./issue.interface"
 
 const issueCreateIntoDB = async (payload: IIssue, user_id: string) => {
   const { title, description, type } = payload;
@@ -9,7 +9,10 @@ const issueCreateIntoDB = async (payload: IIssue, user_id: string) => {
 }
 const getAllIssueFromDB = async () => {
   // get issues collection
-  const issues = (await pool.query(`SELECT * FROM issues`)).rows;
+  const issues = (await pool.query(`
+    SELECT * FROM issues
+    ORDER BY id DESC
+`)).rows;
   const reporterId = issues.map(i => i.reporter_id);
   // get the user
   const users = (await pool.query(`SELECT id, name, role FROM users WHERE id= ANY($1)`, [reporterId])).rows
@@ -46,11 +49,19 @@ const getSingleIssueFromDB = async (id: string) => {
   }
   return result
 };
-const updateUserIntoDB = async () => {
-
+const updateUserIntoDB = async (id: string, payload: UPIssue) => {
+  const { title, description, type } = payload;
+  const result = await pool.query(`UPDATE issues 
+    SET
+    title=COALESCE($1,title),
+    description=COALESCE($2,description),
+    type=COALESCE($3,type)
+    WHERE id=$4 RETURNING *`, [title, description, type, id])
+  return result;
 }
 const deleteUserIntoDB = async (id: string) => {
   const result = await pool.query(`DELETE FROM issues WHERE id=$1`, [id])
+  console.log('db', result)
   return result;
 }
 export const issueService = {
