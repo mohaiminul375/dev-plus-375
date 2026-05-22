@@ -8,50 +8,50 @@ const issueCreateIntoDB = async (payload: IIssue, user_id: string) => {
   return result
 }
 const getAllIssueFromDB = async () => {
-  // relation with issue data with (from) user table
-  const result = await pool.query(`
-    SELECT 
-      i.id,
-      i.title,
-      i.description,
-      i.type,
-      i.status,
-      json_build_object(
-        'id', u.id,
-        'name', u.name,
-        'role', u.role
-      ) AS reporter,
-      i.created_at,
-      i.update_at
-    FROM issues i
-    JOIN users u ON i.reporter_id = u.id`); //explanation
-  return result;
+  // get issues collection
+  const issues = (await pool.query(`SELECT * FROM issues`)).rows;
+  const reporterId = issues.map(i => i.reporter_id);
+  // get the user
+  const users = (await pool.query(`SELECT id, name, role FROM users WHERE id= ANY($1)`, [reporterId])).rows
+  // return issues with reporter info 
+  const result = issues.map(issue => {
+    const reporter = users.find(u => u.id === issue.reporter_id);
+    // remove reporter_id
+    const { reporter_id, ...issueCollection } = issue;
+    // create new collection
+    return {
+      ...issueCollection,
+      reporter: reporter || null
+    }
+  })
+  return result
 };
 const getSingleIssueFromDB = async (id: string) => {
-  const result = await pool.query(`
-    SELECT 
-      i.id,
-      i.title,
-      i.description,
-      i.type,
-      i.status,
-      json_build_object(
-        'id', u.id,
-        'name', u.name,
-        'role', u.role
-      ) AS reporter,
-      i.created_at,
-      i.update_at
-    FROM issues i
-    JOIN users u ON i.reporter_id = u.id
-    WHERE i.id=$1`,[id]);
-  return result;
+  // single one collection
+  const issues = (await pool.query(`
+    SELECT * FROM issues WHERE id=$1
+      `, [id])).rows[0];
+  if (!issues) {
+    return undefined;
+  }
+  // for a single user
+  const user = (await pool.query(`
+    SELECT id,name,role FROM users WHERE id=$1
+    `, [issues.reporter_id])).rows[0]
+  const result = {
+    ...issues, reporter: user
+  }
+  if (!user) {
+    return undefined;
+  }
+  return result
 };
 const updateUserIntoDB = async () => {
 
 }
-const deleteUserIntoDB = async () => {
-
+const deleteUserIntoDB = async (id: string) => {
+  const result = await pool.query(`DELETE FROM issues WHERE id=$1`, [id])
+  return result;
 }
 export const issueService = {
   issueCreateIntoDB,

@@ -17,12 +17,13 @@ const corsOption = {
 }
 app.use(cors(corsOption));
 
-// routes
-
 // test server
 app.get('/', (req: Request, res: Response) => {
     sendResponse(res, { statusCode: 200, success: true, message: "dev plus server is working" })
+    // throw new Error('Test error')
 })
+
+// routes
 app.use('/api/auth/signup', userRouter)
 app.use('/api/auth', authRouter)
 app.use('/api/issues', issueRouter)

@@ -20,7 +20,7 @@ export const initDB = async () => {
      created_at TIMESTAMP DEFAULT NOW(),
      updated_at TIMESTAMP DEFAULT NOW()
      )`);
-        // issue table
+        // issue table NOT NULL
         await pool.query(`
      CREATE TABLE IF NOT EXISTS issues(
      id SERIAL PRIMARY KEY,
@@ -32,8 +32,8 @@ export const initDB = async () => {
      created_at TIMESTAMP DEFAULT NOW(),
      updated_at TIMESTAMP DEFAULT NOW()
      )`)
-        console.log('..DB connected')
-    } catch (error:unknown) {
+        console.log('*..DB connected..*')
+    } catch (error: unknown) {
         console.error(error);
         throw error;
     }

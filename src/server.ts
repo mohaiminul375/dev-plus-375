@@ -1,7 +1,6 @@
 import app from "./app"
 import config from "./config"
 import { initDB } from "./db";
-
 // server running
 (async () => {
     // call db

@@ -1,5 +1,4 @@
 import dotenv from "dotenv";
-import { access } from "fs";
 import { env } from 'process';
 dotenv.config({ quiet: true });
 

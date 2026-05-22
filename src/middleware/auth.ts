@@ -2,13 +2,18 @@ import type { NextFunction, Request, Response } from "express"
 import jwt, { type JwtPayload } from "jsonwebtoken";
 import config from "../config";
 import { pool } from "../db";
+import sendResponse from "../utility/sendResponse";
 type ROLES = "contributor" | "maintainer";
 export const authorized = (...roles: ROLES[]) => {
     return async (req: Request, res: Response, next: NextFunction) => {
         try {
             const token = req.headers.authorization;
             if (!token) {
-                throw new Error("Unauthorized access");
+                sendResponse(res, {
+                    statusCode: 401,
+                    success: false,
+                    message: "Unauthorized access"
+                })
             }
             // decode to verify
             const decoded = jwt.verify(token as string, config.access_secrete as string) as JwtPayload;
@@ -19,16 +24,18 @@ export const authorized = (...roles: ROLES[]) => {
             // if not found from decode
             const user = userData.rows[0];
             if (userData.rows.length === 0) {
-                res.status(404).json({
+                sendResponse(res, {
+                    statusCode: 401,
                     success: false,
-                    message: "User not found",
+                    message: "Unauthorized access"
                 })
             }
             //role base access
             if (roles.length && !roles.includes(user.role)) {
-                res.status(403).json({
+                sendResponse(res, {
+                    statusCode: 403,
                     success: false,
-                    message: "this role has no access"
+                    message: "Forbidden access"
                 })
             }
             // push User to header

@@ -5,3 +5,8 @@ export interface IIssue {
     type?: "bug" | "feature_request";
     status?: "open" | "in_progress" | "resolved";
 }
+
+export const USER_ROLE = {
+    contributor: 'contributor',
+    maintainer: 'maintainer',
+} as const
