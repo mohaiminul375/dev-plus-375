@@ -3,18 +3,28 @@ import express, { type Application, type Request, type Response } from "express"
 import { userRouter } from "./modules/users/users.route";
 import { authRouter } from "./modules/auth/auth.route";
 import { issueRouter } from "./modules/issue/issue.route";
+import cors from 'cors';
+import { globalErrorHandler } from "./middleware/globalErrorHandler";
+import sendResponse from "./utility/sendResponse";
 const app: Application = express()
+
 //middleware CORS
 app.use(express.json());
+const corsOption = {
+    origin: "http://localhost:3000",
+    optionsSuccessStatus: 200
+}
+app.use(cors(corsOption));
+
 // routes
+
+// test server
+app.get('/', (req: Request, res: Response) => {
+    sendResponse(res, { statusCode: 200, success: true, message: "dev plus server is working" })
+})
 app.use('/api/auth/signup', userRouter)
 app.use('/api/auth', authRouter)
 app.use('/api/issues', issueRouter)
-// test server
-app.get('/', (req: Request, res: Response) => {
-    res.status(200).json({
-        success: true,
-        message: 'dev-plus server is working.!'
-    })
-})
+// Global Error Handling Middleware
+app.use(globalErrorHandler);
 export default app;
