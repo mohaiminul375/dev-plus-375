@@ -5,6 +5,7 @@ const LogInUser = async (req: Request, res: Response) => {
     try {
         const result = await authService.LoginUserIntoDB(req.body);
         const { accessToken, user } = result;
+        // return to user access token and user obj
         res.status(200).json({
             "success": true,
             "message": "Login successful",

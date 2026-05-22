@@ -6,12 +6,13 @@ import { issueRouter } from "./modules/issue/issue.route";
 import cors from 'cors';
 import { globalErrorHandler } from "./middleware/globalErrorHandler";
 import sendResponse from "./utility/sendResponse";
+import config from "./config";
 const app: Application = express()
 
 //middleware CORS
 app.use(express.json());
 const corsOption = {
-    origin: "http://localhost:3000",
+    origin: config.origin_url,
     optionsSuccessStatus: 200
 }
 app.use(cors(corsOption));

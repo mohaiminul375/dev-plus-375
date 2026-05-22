@@ -1,13 +1,10 @@
 import type { Request, Response } from "express";
 import { issueService } from "./issue.service";
-import type { JwtPayload } from "jsonwebtoken";
 
 const createIssue = async (req: Request, res: Response) => {
-    // console.log(req.user)
-    const user_id = req?.user?.id;
+    const user_id:string = req?.user?.id;
     try {
         const result = await issueService.issueCreateIntoDB(req.body, user_id as string);
-        console.log(result, 'step_4');
         res.status(201).json({
             "success": true,
             "message": "Issue created successfully",
@@ -25,6 +22,7 @@ const getAllIssue = async (req: Request, res: Response) => {
         console.error(error)
     }
 }
+// get single user by id
 const getSingleIssue = async (req: Request, res: Response) => {
     try {
         const id = req.params.id

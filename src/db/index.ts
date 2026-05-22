@@ -1,10 +1,12 @@
 import { Pool } from "pg";
 import config from "../config";
-
+import sendResponse from "../utility/sendResponse";
+// neon db url
 export const pool = new Pool({
     connectionString: config.db_url,
 })
 
+// connect neon DB
 export const initDB = async () => {
     try {
         // user table
@@ -16,7 +18,7 @@ export const initDB = async () => {
      password text NOT NULL,
      role VARCHAR(12) DEFAULT 'contributor',
      created_at TIMESTAMP DEFAULT NOW(),
-     update_at TIMESTAMP DEFAULT NOW()
+     updated_at TIMESTAMP DEFAULT NOW()
      )`);
         // issue table
         await pool.query(`
@@ -28,10 +30,11 @@ export const initDB = async () => {
      status VARCHAR(15) DEFAULT 'open' NOT NULL,
      reporter_id INT REFERENCES users(id) ON DELETE CASCADE,
      created_at TIMESTAMP DEFAULT NOW(),
-     update_at TIMESTAMP DEFAULT NOW()
+     updated_at TIMESTAMP DEFAULT NOW()
      )`)
         console.log('..DB connected')
-    } catch (error: any) {
+    } catch (error:unknown) {
         console.error(error);
+        throw error;
     }
 }
