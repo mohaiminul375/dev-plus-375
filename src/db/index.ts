@@ -28,7 +28,7 @@ export const initDB = async () => {
      description TEXT NOT NULL CHECK (char_length(description) >= 20),
      type VARCHAR(20) NOT NULL,
      status VARCHAR(15) DEFAULT 'open' NOT NULL,
-     reporter_id INT REFERENCES users(id) ON DELETE CASCADE,
+     reporter_id INT NOT NULL,
      created_at TIMESTAMP DEFAULT NOW(),
      updated_at TIMESTAMP DEFAULT NOW()
      )`)

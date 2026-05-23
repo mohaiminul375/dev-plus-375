@@ -3,8 +3,10 @@ import type { IIssue, IQParams, UPIssue } from "./issue.interface"
 
 const issueCreateIntoDB = async (payload: IIssue, user_id: string) => {
   const { title, description, type, status } = payload;
+  console.log(payload, user_id)
   const result = await pool.query(`
-    INSERT INTO issues(reporter_id,title,description,type,status) VALUES($1,$2,$3,$4,COALESCE($5,status)) RETURNING *`, [user_id, title, description, type, status])
+    INSERT INTO issues(reporter_id,title,description,type,status) VALUES($1,$2,$3,$4,COALESCE($5, 'open')) RETURNING *`, [user_id, title, description, type, status])
+  console.log(result, 'result')
   return result
 }
 // 

@@ -4,6 +4,7 @@ import sendResponse from "../../utility/sendResponse";
 // create user func
 const createUser = async (req: Request, res: Response) => {
     try {
+        console.log(req.body)
         const result = await userService.createUserIntoDB(req.body)
         // res.status(201).json({
         //     "success": true,
