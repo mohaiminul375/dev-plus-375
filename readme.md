@@ -1,12 +1,11 @@
-# dev-plus-375
+## 🚼 DevPulse – Issue Tracker API
 
-> A collaborative platform for software teams to report bugs, suggest features, and coordinate resolutions._
-> CRUD operation
+**A collaborative platform for software teams to report bugs, suggest features, and coordinate resolutions.
+Built with secure authentication, role-based access control, and full CRUD operations.**
 
 ![License](https://img.shields.io/badge/license-Unlicense-green) ![Version](https://img.shields.io/badge/version-1.0.0-blue) ![Language](https://img.shields.io/badge/language-JavaScript-yellow) ![Framework](https://img.shields.io/badge/framework-Node.js-orange) ![GitHub](https://img.shields.io/badge/GitHub-mohaiminul375/dev-plus-375-black?logo=github) ![Build Status](https://img.shields.io/github/actions/workflow/status/mohaiminul375/dev-plus-375/ci.yml?branch=main)
 
 ## 📋 Table of Contents
-
 - [Features](#features)
 - [Installation](#installation)
 - [API Endpoints](#api-endpoints)
@@ -14,7 +13,6 @@
 - [Deployment](#deployment)
 
 ## ℹ️ Project Information
-
 - **👤 Author:** mohaiminul375
 - **📦 Version:** 1.0.0
 - **📄 License:** Unlicense
@@ -31,32 +29,82 @@
 - Only Maintainer can delete issues
 - PostgreSQL (NeonDB) database integration
 
-## Installation
+## Tech Stack
+- **Runtime:** Node.js
+- **Framework:** Express.js
+- **Language:** TypeScript
+- **Database:** PostgreSQL (`pg`)
+- **Authentication:** `jsonwebtoken`, `bcrypt`
+
+## 📦 Installation & Setup
 ```
 git clone https://github.com/mohaiminul375/dev-plus-375
 cd dev-plus-375
 npm install
 ```
 
-
-## 📌 API Endpoints
-
-### Auth
-POST /api/auth/register  
-POST /api/auth/login
-
-### Issues
-GET /api/issues  
-POST /api/issues  
-PATCH /api/issues/:id  
-DELETE /api/issues/:id
-
-## Environment Variables
+**🔐 Environment Variables
+Create a `.env` file:**
+```
 - PORT=8800
 - DATABASE_URL=your_neon_db_url
 - JWT_SECRET=your_jwt_secret
-- JWT_EXPIRES_IN=7d
-- CORS_URL="http://localhost:3000"
+- ACCESS_EXPIRE= access_expire_time
+- CORS_URL=http://localhost:3000
+```
 
-## 🚀 Deployment
-Live API: https://as-2-dev-plus.vercel.app
+## ▶️ Run Project
+**Development**
+
+```
+npm run dev
+```
+
+**Production**
+
+```
+npm run build
+npm start
+```
+
+## 📌 API Endpoints
+
+### Authentication (`/api/auth`)
+
+- `POST /api/auth/signup` - Register a new user
+- `POST /api/auth/login` - Authenticate a user and receive a JWT
+
+### Issues (`/api/issues`)
+
+- `GET /api/issues` - Retrieve all issues
+- `GET /api/issues/:id` - Retrieve a single issue by its ID
+- `POST /api/issues` - Create a new issue (Requires Auth)
+- `PATCH /api/issues/:id` - Update an existing issue (Requires Auth)
+- `DELETE /api/issues/:id` - Delete an issue (Requires Auth)
+
+## 🗄️ Database Schema Summary
+
+### users Table
+
+| Column     | Type         | Description                      |
+| ---------- | ------------ | -------------------------------- |
+| id         | SERIAL       | Primary key                      |
+| name       | VARCHAR(255) | User full name                   |
+| email      | VARCHAR(255) | Unique user email                |
+| password   | TEXT         | Hashed password                  |
+| role       | VARCHAR(20)  | User role (default: contributor) |
+| created_at | TIMESTAMP    | Account creation time            |
+| updated_at | TIMESTAMP    | Last update time                 |
+
+### issues Table
+
+| Column      | Type         | Description                  |
+| ----------- | ------------ | ---------------------------- |
+| id          | SERIAL       | Primary key                  |
+| title       | VARCHAR(150) | Issue title                  |
+| description | TEXT         | Issue description            |
+| type        | VARCHAR(50)  | Issue type (bug/feature)     |
+| status      | VARCHAR(50)  | Issue status (default: open) |
+| reporter_id | INTEGER      | ID of issue reporter         |
+| created_at  | TIMESTAMP    | Issue creation time          |
+| updated_at  | TIMESTAMP    | Last update time             |
