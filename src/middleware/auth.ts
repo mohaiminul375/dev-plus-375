@@ -4,6 +4,7 @@ import config from "../config";
 import { pool } from "../db";
 import sendResponse from "../utility/sendResponse";
 type ROLES = "contributor" | "maintainer";
+// authentication middleware
 export const authorized = (...roles: ROLES[]) => {
     return async (req: Request, res: Response, next: NextFunction) => {
         try {

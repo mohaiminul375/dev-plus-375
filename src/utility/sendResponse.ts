@@ -1,5 +1,4 @@
 import type { Response } from "express";
-
 interface IResponse<T> {
     statusCode: number;
     success: boolean;

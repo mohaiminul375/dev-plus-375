@@ -13,7 +13,6 @@ const LogInUser = async (req: Request, res: Response) => {
                 user: user
             }
         })
-
     } catch (error) {
         sendResponse(res, {
             statusCode: 500, success: false, message: "Login failed due to internal server error", error: error

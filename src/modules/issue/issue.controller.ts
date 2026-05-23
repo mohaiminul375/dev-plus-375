@@ -25,7 +25,6 @@ const getSingleIssue = async (req: Request, res: Response) => {
     try {
         const id = req.params.id
         const result = await issueService.getSingleIssueFromDB(id as string);
-        console.log(result, 'dddd')
         if (!result) {
             sendResponse(res, { statusCode: 404, success: false, message: "Resource not found maybe data not exists", data: null })
         }

@@ -3,18 +3,17 @@ import type { IIssue, IQParams, UPIssue } from "./issue.interface"
 
 const issueCreateIntoDB = async (payload: IIssue, user_id: string) => {
   const { title, description, type, status } = payload;
-  console.log(payload, user_id)
   const result = await pool.query(`
-    INSERT INTO issues(reporter_id,title,description,type,status) VALUES($1,$2,$3,$4,COALESCE($5, 'open')) RETURNING *`, [user_id, title, description, type, status])
-  console.log(result, 'result')
+    INSERT INTO issues(reporter_id,title,description,type,status) VALUES($1,$2,$3,$4,COALESCE($5, 'open')) RETURNING *`,[user_id, title, description, type, status])
   return result
 }
 // 
 const getAllIssueFromDB = async (urlParams: IQParams) => {
   const { sort, status, type } = urlParams;
-  console.log(urlParams)
   let query = "SELECT * FROM issues";
   let values: string[] = [];
+
+  // status & type query validation
   if (type && status) {
     values.push(type)
     query += ` WHERE type=$${values.length}`
@@ -35,12 +34,12 @@ const getAllIssueFromDB = async (urlParams: IQParams) => {
   } else {
     query += " ORDER BY id DESC"
   }
-  console.log(query, values)
+
   // get issues collection
   const issues = (await pool.query(query, values)).rows;
   const reporterId = issues.map(i => i.reporter_id);
   // get the user
-  const users = (await pool.query(`SELECT id, name, role FROM users WHERE id= ANY($1)`, [reporterId])).rows
+  const users = (await pool.query(`SELECT id, name, role FROM users WHERE id= ANY($1)`,[reporterId])).rows
   // return issues with reporter info 
   const result = issues.map(issue => {
     const reporter = users.find(u => u.id === issue.reporter_id);
@@ -81,7 +80,7 @@ const updateUserIntoDB = async (id: string, payload: UPIssue) => {
     title=COALESCE($1,title),
     description=COALESCE($2,description),
     type=COALESCE($3,type)
-    WHERE id=$4 RETURNING *`, [title, description, type, id])
+    WHERE id=$4 RETURNING *`,[title, description, type, id])
   return result;
 }
 const deleteUserIntoDB = async (id: string) => {
@@ -95,5 +94,3 @@ export const issueService = {
   updateUserIntoDB,
   deleteUserIntoDB
 }
-
-

@@ -5,8 +5,8 @@ import { USER_ROLE } from "./issue.interface";
 import { issueAccMiddleware } from "../../middleware/issueAccessMiddleware";
 const router = Router();
 // 
-router.get('/', issueController.getAllIssue); // pending filter
-router.get('/:id', issueController.getSingleIssue); // pending filter
+router.get('/', issueController.getAllIssue);
+router.get('/:id', issueController.getSingleIssue);
 router.post('/', authorized(USER_ROLE.contributor, USER_ROLE.maintainer), issueController.createIssue);
 
 router.put('/:id', authorized(USER_ROLE.contributor, USER_ROLE.maintainer), issueAccMiddleware(), issueController.updateIssue);

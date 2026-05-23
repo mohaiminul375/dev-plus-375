@@ -4,7 +4,7 @@ import jwt, { type SignOptions } from 'jsonwebtoken';
 import config from "../../config";
 import type {  Response } from "express";
 import sendResponse from "../../utility/sendResponse";
-// pending error handling
+// login validation and create token
 const LoginUserIntoDB = async (res: Response, payload: { email: string, password: string }) => {
     const { email, password } = payload;
     // is user existed in server
