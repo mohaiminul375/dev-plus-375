@@ -13,7 +13,8 @@ const createIssue = async (req: Request, res: Response) => {
 }
 const getAllIssue = async (req: Request, res: Response) => {
     try {
-        const result = await issueService.getAllIssueFromDB();
+        const urlParams = req.query;
+        const result = await issueService.getAllIssueFromDB(urlParams);
         sendResponse(res, { statusCode: 200, success: true, data: result })
     } catch (error) {
         sendResponse(res, { statusCode: 201, success: false, message: "Failed to get issues data due to a server error.", error: error })
@@ -38,9 +39,9 @@ const updateIssue = async (req: Request, res: Response) => {
     const id = req.params.id;
     try {
         const result = await issueService.updateUserIntoDB(id as string, req.body);
-        console.log(result.rows);
-        if (result.rows.length === 0) {
 
+        if (result.rows.length === 0) {
+            sendResponse(res, { statusCode: 404, success: false, message: "Issue not found", data: result.rows[0] })
         }
         sendResponse(res, { statusCode: 200, success: true, message: "Issue updated successfully", data: result.rows[0] })
     } catch (error) {

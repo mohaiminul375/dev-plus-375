@@ -7,14 +7,12 @@ export const issueAccMiddleware = () => {
         try {
             const user = req.user;
             const reqId = req.params.id;
-            console.log(user, reqId)
-            console.log('middleware hited')
-
             // query the updated id
             const result = (await pool.query(`SELECT * FROM issues WHERE id=$1`, [reqId])).rows[0];
             if (!result) {
                 sendResponse(res, { statusCode: 404, success: false, message: "Issue not founded" })
             }
+            // no restriction for maintainer
             if (user?.role === "maintainer") {
                 next();
                 return
