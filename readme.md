@@ -3,40 +3,42 @@
 **A collaborative platform for software teams to report bugs, suggest features, and coordinate resolutions.
 Built with secure authentication, role-based access control, and full CRUD operations.**
 
-![License](https://img.shields.io/badge/license-Unlicense-green) ![Version](https://img.shields.io/badge/version-1.0.0-blue) ![Language](https://img.shields.io/badge/language-JavaScript-yellow) ![Framework](https://img.shields.io/badge/framework-Node.js-orange) ![GitHub](https://img.shields.io/badge/GitHub-mohaiminul375/dev-plus-375-black?logo=github) ![Build Status](https://img.shields.io/github/actions/workflow/status/mohaiminul375/dev-plus-375/ci.yml?branch=main)
+![License](https://img.shields.io/badge/license-Unlicense-green) ![Version](https://img.shields.io/badge/version-1.0.0-blue) ![Language](https://img.shields.io/badge/language-JavaScript-yellow) ![Framework](https://img.shields.io/badge/framework-express-green) ![GitHub](https://img.shields.io/badge/GitHub-mohaiminul375/dev-plus-375-black?logo=github) ![Build Status](https://img.shields.io/github/actions/workflow/status/mohaiminul375/dev-plus-375/ci.yml?branch=main)
 
 ## 📋 Table of Contents
+
 - [Features](#features)
+- [Tech Stack](#tech-stack)
 - [Installation](#installation)
+- [Run Project](#run-project)
 - [API Endpoints](#api-endpoints)
-- [Environment Variables](#environment-variables)
-- [Deployment](#deployment)
+- [Database Schema Summary](#database-schema-summary)
 
 ## ℹ️ Project Information
-- **👤 Author:** mohaiminul375
+
+- **👤 Author:** [Mohaiminul](https://mohaiminul-dev.web.app)
 - **📦 Version:** 1.0.0
 - **📄 License:** Unlicense
 - **🌐 Website:** [https://as-2-dev-plus.vercel.app](https://as-2-dev-plus.vercel.app)
 - **📂 Repository:** [https://github.com/mohaiminul375/dev-plus-375](https://github.com/mohaiminul375/dev-plus-375)
 
 ## Features
-- User Registration & Login system
-- Password hashing using bcrypt
-- Authentication using JWT (Access Token)
-- Role-based authorization (Contributor / Maintainer)
-- Create, Read, Update, Delete (CRUD) for issues
-- Middleware-based route protection
-- Only Maintainer can delete issues
-- PostgreSQL (NeonDB) database integration
+
+- **User Authentication:** Secure signup and login functionality using JSON Web Tokens (JWT) and `bcrypt` for password hashing.
+- **Issue Management:** Complete CRUD (Create, Read, Update, Delete) operations for issues.
+- **Protected Routes:** Endpoints for creating, updating, and deleting issues are secured via authentication middleware.
+- **TypeScript Support:** Strongly typed codebase for better maintainability and error checking
 
 ## Tech Stack
-- **Runtime:** Node.js
-- **Framework:** Express.js
+
+- **Runtime:** Node.js `v24.15.0`
+- **Framework:** Express.js `^5.2.1`
 - **Language:** TypeScript
-- **Database:** PostgreSQL (`pg`)
+- **Database:** PostgreSQL (`pg`) `8.21.0`
 - **Authentication:** `jsonwebtoken`, `bcrypt`
 
 ## 📦 Installation & Setup
+
 ```
 git clone https://github.com/mohaiminul375/dev-plus-375
 cd dev-plus-375
@@ -45,6 +47,7 @@ npm install
 
 **🔐 Environment Variables
 Create a `.env` file:**
+
 ```
 - PORT=8800
 - DATABASE_URL=your_neon_db_url
@@ -54,6 +57,7 @@ Create a `.env` file:**
 ```
 
 ## ▶️ Run Project
+
 **Development**
 
 ```
@@ -89,10 +93,10 @@ npm start
 | Column     | Type         | Description                      |
 | ---------- | ------------ | -------------------------------- |
 | id         | SERIAL       | Primary key                      |
-| name       | VARCHAR(255) | User full name                   |
-| email      | VARCHAR(255) | Unique user email                |
+| name       | VARCHAR(200) | User full name                   |
+| email      | VARCHAR(200) | Unique user email                |
 | password   | TEXT         | Hashed password                  |
-| role       | VARCHAR(20)  | User role (default: contributor) |
+| role       | VARCHAR(12)  | User role (default: contributor) |
 | created_at | TIMESTAMP    | Account creation time            |
 | updated_at | TIMESTAMP    | Last update time                 |
 
@@ -103,8 +107,8 @@ npm start
 | id          | SERIAL       | Primary key                  |
 | title       | VARCHAR(150) | Issue title                  |
 | description | TEXT         | Issue description            |
-| type        | VARCHAR(50)  | Issue type (bug/feature)     |
-| status      | VARCHAR(50)  | Issue status (default: open) |
+| type        | VARCHAR(20)  | Issue type (bug/feature)     |
+| status      | VARCHAR(15)  | Issue status (default: open) |
 | reporter_id | INTEGER      | ID of issue reporter         |
 | created_at  | TIMESTAMP    | Issue creation time          |
 | updated_at  | TIMESTAMP    | Last update time             |
