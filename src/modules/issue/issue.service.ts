@@ -10,21 +10,21 @@ const issueCreateIntoDB = async (payload: IIssue, user_id: string) => {
 // 
 const getAllIssueFromDB = async (urlParams: IQParams) => {
   const { sort, status, type } = urlParams;
-
-  let query = "SELECT * FROM issues WHERE";
+  console.log(urlParams)
+  let query = "SELECT * FROM issues";
   let values: string[] = [];
   if (type && status) {
     values.push(type)
-    query += ` type=$${values.length}`
+    query += ` WHERE type=$${values.length}`
     values.push(status)
     query += ` OR status=$${values.length}`
   } else if (type) {
     values.push(type)
-    query += ` type=$${values.length}`
+    query += ` WHERE type=$${values.length}`
   }
   else if (status) {
     values.push(status)
-    query += ` status=$${values.length}`
+    query += ` WHERE status=$${values.length}`
   }
 
   // sort by oldest and default newest first
